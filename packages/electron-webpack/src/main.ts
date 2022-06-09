@@ -307,7 +307,7 @@ const schemeDataPromise = new Lazy(() => readJson(path.join(__dirname, "..", "sc
 
 export async function createConfigurator(type: ConfigurationType, env: ConfigurationEnv | null) {
   if (env != null) {
-    // allow to pass as `--env.autoClean=false` webpack arg
+    // allow to pass as `--env autoClean=false` webpack arg
     const _env: any = env
     for (const name of ["minify", "autoClean", "production"]) {
       if (_env[name] === "true") {
