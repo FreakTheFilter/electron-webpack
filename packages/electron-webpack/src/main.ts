@@ -7,8 +7,7 @@ import * as path from "path"
 import { validateConfig } from "read-config-file"
 import { deepAssign } from "read-config-file/out/deepAssign"
 import "source-map-support/register"
-import { Configuration, Plugin, RuleSetRule } from "webpack"
-import merge from "webpack-merge"
+import { Configuration, RuleSetRule } from "webpack"
 import { getElectronWebpackConfiguration, getPackageMetadata } from "./config"
 import { configureTypescript } from "./configurators/ts"
 import { configureVue } from "./configurators/vue/vue"
@@ -16,6 +15,7 @@ import { ConfigurationEnv, ConfigurationType, ElectronWebpackConfiguration, Pack
 import { BaseTarget } from "./targets/BaseTarget"
 import { MainTarget } from "./targets/MainTarget"
 import { BaseRendererTarget, RendererTarget } from "./targets/RendererTarget"
+import { Plugin } from "./types"
 import { getFirstExistingFile } from "./util"
 
 export { ElectronWebpackConfiguration } from "./core"
@@ -194,7 +194,7 @@ export class WebpackConfigurator {
       plugins: this.plugins,
     }
 
-    if (entry != null) {
+    if (entry != null && this._configuration) {
       this._configuration.entry = entry
     }
 
@@ -257,7 +257,8 @@ export class WebpackConfigurator {
         return customModule(config, this)
       }
       else {
-        return merge.smart(config, customModule)
+        throw new Error('merge.smart has been dropped by `webpack-merge` - please use the function notation instead')
+        //return merge.smart(config, customModule)
       }
     }
 
